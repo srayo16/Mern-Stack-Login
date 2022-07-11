@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Footer from '../Footer/Footer';
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/style.css'
 
 const Home = () => {
+    const [value, setValue] = useState()
     return (
         <>
-            <div class="hero my-h-screen" style={{ backgroundImage: 'url(https://i.ibb.co/Rg7n89x/shubham-dhage-R2-Ht-YWs5-QA-unsplash.jpg)' }}>
+            <div class="hero my-h-screen overflow-hidden" style={{ backgroundImage: 'url(https://i.ibb.co/Rg7n89x/shubham-dhage-R2-Ht-YWs5-QA-unsplash.jpg)' }}>
                 {/* <div class="hero-overlay bg-opacity-60"></div> */}
                 <div class="container mx-auto min-h-screen mt-8">
                     <div class="mx-auto text-center">
@@ -21,10 +24,23 @@ const Home = () => {
                                         <button className='btn btn-error'>Send OTP</button>
                                     </label>
                                 </div>
-                                <div className='flex justify-center content-center'>
-                                    <input type="text" value={"BD (+880)"} class="input input-bordered w-24 lg:w-24 text-xs" required />
-                                    <input type="number" placeholder="Mobile Number" class="input input-bordered w-full mb-5" required />
-                                </div>
+                                {/* <div className='flex justify-center content-center'> */}
+                                {/* <input type="text" value={"BD (+880)"} class="input input-bordered w-24 lg:w-24 text-xs" required /> */}
+                                <PhoneInput
+                                    country={'bd'}
+                                    value={value}
+                                    onChange={setValue}
+                                    className="mb-5 w-full container"
+                                    placeholder="Mobile Number"
+                                    required
+                                    inputProps={{
+                                        name: 'phone',
+                                        required: true,
+                                        autoFocus: true
+                                    }}
+                                />
+                                {/* <input type="number" placeholder="Mobile Number" class="input input-bordered w-full mb-5" required /> */}
+                                {/* </div> */}
                                 <div class="form-control mb-5">
                                     <label class="input-group">
                                         <input type="number" placeholder="Mobile Verification Code" class="input w-full input-bordered" required />

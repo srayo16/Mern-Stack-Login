@@ -4,6 +4,7 @@ import PhoneInput from 'react-phone-input-2';
 import 'react-phone-input-2/lib/style.css';
 import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import auth from '../../Firebase.init';
+import swal from 'sweetalert';
 
 const Home = () => {
     const [value, setValue] = useState();
@@ -16,6 +17,8 @@ const Home = () => {
             'size': 'Visible',
             'callback': (response) => {
                 // reCAPTCHA solved, allow signInWithPhoneNumber.
+                swal("Success", "Mobile verification code sent successfully", "success");
+                // swal("CAPTCHA solved", "Allow signInWithPhoneNumber", "success");
 
             }
         }, auth)
@@ -35,10 +38,12 @@ const Home = () => {
                 // SMS sent. Prompt user to type the code from the message, then sign the
                 // user in with confirmationResult.confirm(code).
                 window.confirmationResult = confirmationResult;
+                swal("Success", "Mobile verification code sent successfully", "success");
                 // ...
             }).catch((error) => {
                 // Error; SMS not sent
                 // ...
+                swal("Attention", "Mobile verification code sent unsuccessful", "error");
                 console.log(error);
             });
 
@@ -66,7 +71,7 @@ const Home = () => {
         // console.log(emailOTP);
 
 
-        fetch(`http://localhost:5000/verifyOtpEmail?emailOrigin=${valueEmail}`, {
+        fetch(`https://polar-wave-34681.herokuapp.com/verifyOtpEmail?emailOrigin=${valueEmail}`, {
             method: "GET",
             headers: {
                 'content-type': 'application/json'
@@ -86,7 +91,8 @@ const Home = () => {
                         confirmationResult.confirm(OTP).then((result) => {
                             // User signed in successfully.
                             const user = result.user;
-                            alert("Alhamdulillah, success");
+                            // alert("Alhamdulillah, success");
+                            swal("Success", "We have received your message. Please allow 48 hours to respond", "success")
                             // console.log(user);
 
 
@@ -94,15 +100,19 @@ const Home = () => {
                         }).catch((error) => {
                             // User couldn't sign in (bad verification code?)
                             // ...
+                            swal("Attention", "User couldn't sign in (bad verification code?)", "error")
                             console.log(error.message)
                         });
 
                     }
                 }
+                else {
+                    swal("Attention", "Email verification code is invalid", "error");
+                }
 
             })
 
-        console.log('success')
+        // console.log('success')
 
     }
 
@@ -111,7 +121,7 @@ const Home = () => {
         let getOtp = emailOTPOrigin(100000, 999999);
         // console.log({ getEmail });
 
-        fetch('http://localhost:5000/sendEmail', {
+        fetch('https://polar-wave-34681.herokuapp.com/sendEmail', {
             method: "POST",
             headers: {
                 'content-type': 'application/json'
@@ -121,14 +131,14 @@ const Home = () => {
             .then(res => res.json())
             .then(data => {
                 if (data?.acknowledged) {
-                    console.log(data);
+                    // console.log(data);
+                    swal("Success", "Please check your email for verification code", "success")
                     // setEmailOtpVerify(getOtp);
                     // console.log(getOtp);
                 }
 
             })
     }
-
     return (
         <>
             <div class="hero my-h-screen overflow-hidden" style={{ backgroundImage: 'url(https://i.ibb.co/Rg7n89x/shubham-dhage-R2-Ht-YWs5-QA-unsplash.jpg)' }}>

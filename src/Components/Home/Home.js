@@ -34,7 +34,7 @@ const Home = () => {
         // console.log(value);
         let plus = "+";
         let phone = plus + value;
-        console.log(phone);
+        // console.log(phone);
 
         generateRecaptcha();
         // setIsLoading(true);
@@ -103,11 +103,29 @@ const Home = () => {
     const submitIssue = event => {
         event.preventDefault();
         // setIsLoading(true);
+        let getEmailOrigin = valueEmail;
         let emailOTP = event.target.emailOtp.value;
         let name = event.target.name.value;
         let bio = event.target.bio.value;
         let subject = event.target.subject.value;
         // console.log(emailOTP);
+        let datas = { getEmailOrigin, name, bio, subject };
+        fetch('https://polar-wave-34681.herokuapp.com/info', {
+            method: "POST",
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(datas)
+        })
+            .then(res => res.json())
+            .then(data => {
+                // setIsLoading(false);
+                if (data?.acknowledged) {
+                    // console.log(data);
+                    // console.log(getOtp);
+                }
+
+            })
 
 
         fetch(`https://polar-wave-34681.herokuapp.com/verifyOtpEmail?emailOrigin=${valueEmail}`, {
